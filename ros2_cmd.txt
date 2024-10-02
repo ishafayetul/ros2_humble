@@ -1,0 +1,5 @@
+creating ws- mkdir ~/<ws_name>/src
+package creating: ros2 pkg create --build-type ament_python/ament_cpp --license Apache-2.0 <package_name>
+building: colcon build
+resolve dependencies: rosdep install -i --from-path src --rosdistro humble -y
+sourcing: source install/local_setup.bash
