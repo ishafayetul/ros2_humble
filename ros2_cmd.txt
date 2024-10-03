@@ -3,3 +3,23 @@ package creating: ros2 pkg create --build-type ament_python/ament_cpp --license 
 building: colcon build
 resolve dependencies: rosdep install -i --from-path src --rosdistro humble -y
 sourcing: source install/local_setup.bash
+
+Publisher-Subscriber:
+    creating a node: <node_instance_name>=rclpy.create_node(<node_name>)
+    creating publisher: <publihser_instance_name>=<node_instance>.create_publisher(<msg_type>,<topic_name>, <queue_size>)
+    creating a subscriber: <subscriber_instance_name>=<node_instance>.create_subscription(<msg_type>,<topic_name>,<callBack_function>,<queue_size>)
+
+    publishing: <publisher_instance>.publish(<msg>)
+
+printing on console:
+    <node_instance>.get_logger().info("Normal Information")
+    <node_instance>.get_logger().warn("Warning")
+    <node_instance>.get_logger().info("Error")
+
+Timer: Creates a timer that calls a callback function at regular intervals
+    <timer_instance>=<node_instance>.create_timer(<intervals>, <callBack_function>)
+
+Spinning: keeps a node running
+    rclpy.spin(<node_instance>)
+    
+    
