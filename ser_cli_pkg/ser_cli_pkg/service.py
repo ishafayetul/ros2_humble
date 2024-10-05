@@ -3,6 +3,8 @@ from rclpy.node import Node
 from msg_srv_pkg.srv import AddTwoInt
 
 def handle_request(req,resp):
+    print(req)
+    print(resp)
     resp.sum=req.a+req.b
     print(f'Request: {req.a} + {req.b} = {resp.sum}')
     return resp
