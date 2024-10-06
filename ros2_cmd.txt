@@ -21,5 +21,80 @@ Timer: Creates a timer that calls a callback function at regular intervals
 
 Spinning: keeps a node running
     rclpy.spin(<node_instance>)
+    rclpy.spin_once(<node_instance>) #Runs only one time
+
+Custom Msg-Srv: file name should be started with CAPITAL LETTER, pkg type should be ament_cmake
+    showing : ros2 interface show <pkg/srv/file>
+
+Service Client:
+    creating a service: <service_instance> = <node_instance> . create_service(<srv_msg_name>,<service_name>,<callBack_function>)
+
+    creating a client: <client_instance> = <node_instance> . create_client(<srv_msg_name>,<service_name>)
+        wait for service: <client_instance>.wait_for_service(timeout_sec=<value>)
+        creating a request: <request_instance> = <srv_msg>.Request()
+        sending a request: <client_instance> . call_async(<request_instance>)
     
+    testing a service from cli: ros2 service call /add_two_ints example_interfaces/srv/AddTwoInts "{a: 5, b: 10}"
+
+        Future: represents a value that may not yet be available but will be resolved (either successfully or with an error) at some point in the future.
+            future.done() : checks if the future has finished or not, returns boolean
+            future.result() : gets the value of response, returns value or exception if error occurs.
+            future.exception() : returns exception if occurs otherwise none.
+            future.cancel(): attemps to cancel the request
+            future.cancelled(): returns true if future was cancelled
+            future.add_done_callback(callback): Adds a callback function to be executed once the Future is complete.
+        
+        Client Methods:
+            client.wait_for_service(timeout_sec=value): waits for the service to become available.
+            client.call(request): sends a service request and blocks untill the result is returned
+            client.call_async(request): Sends a service request asynchronously and returns a Future object that will hold the result.
+            client.destroy(): Cleans up and destroys the client, releasing any resources it holds.
+            client.service_is_ready(): Checks if the service is currently available.
+            client.get_service_name(): Returns the name of the service that the client is connected to.
+            client.assert_liveliness(): used to notify the system that the client is still alive. 
+            client.configure_intra_process_communication(enable=True) : This is used to enable intra-process 
+                communication, where messages or services can be passed directly within the same process without 
+                going through the ROS 2 network stack, reducing latency and overhead. Intra-process communication 
+                is particularly useful for performance optimization.
+
+        Service Methods:
+            service.destroy(): Cleans up and destroys the service object, releasing any resources it holds.
+            service.service_is_ready(): Checks if the service is ready to process incoming requests.
+            service.get_service_name(): Returns the name of the service that the service object is handling.
+            service.assert_liveliness() : Asserts the liveliness of the service, notifying the system that the service is still alive.
+            service.configure_intra_process_communication(enable=True) : does same as client.
+            service.get_qos(): Returns the Quality of Service (QoS) settings for the service.
+
+Parameters:
+    node.declare_parameter("parameter_name","optional_default_value") : Declares a new parameter for the node with a name and optionally a default value.
     
+    node.set_parameter("param_name", Parameter.Type.INTEGER, <value>) : set value of a single parameter object
+    node.set_parameters([
+        Parameter('param1', Parameter.Type.INTEGER, 10),
+        Parameter('param2', Parameter.Type.STRING, 'value') : set multiple params value, also accpets parameter obj
+    ])
+
+    param=node.get_parameter("param_name") : returns the param obj
+    params = node.get_parameters(['param1', 'param2']) : Retrieves multiple parameters by name. It returns a list of Parameter objects.
+
+    param.get_name(): returns the name of the parameter
+    param.get_type() : returns the type of the parameter
+    param.get_parameter_value().string_value : returns the param value in string type (tyep casting)
+    param.value : returns actual value (w/o type casting)
+    param_msg=param.to_parameter_msg() :  Converts the parameter into a message of type Parameter that can be used in communication with other nodes.
+    param = Parameter.from_parameter_msg(param_msg) : Converts a Parameter message (from communication) back into a Parameter object.
+    repr(param) : Provides a string representation of the parameter object, useful for debugging.
+    
+    node.has_parameter('param_name') : Checks if a parameter exists in the node.
+    node.undeclare_parameter('param_name') : Undeclares a parameter by removing it from the node. After undeclaring, the parameter will no longer be accessible.
+    param = node.get_parameter_or('param_name', Parameter('param_name', Parameter.Type.STRING, 'default_value')) : Returns the parameter if it exists, otherwise returns a provided default value.
+
+    Parameter Types:
+        Parameter.Type.BOOL: Boolean type (True/False).
+        Parameter.Type.INTEGER: Integer type.
+        Parameter.Type.DOUBLE: Double/float type.
+        Parameter.Type.STRING: String type.
+        Parameter.Type.BYTE_ARRAY: List of bytes.
+        Parameter.Type.INTEGER_ARRAY: List of integers.
+        Parameter.Type.DOUBLE_ARRAY: List of doubles.
+        Parameter.Type.STRING_ARRAY: List of strings.

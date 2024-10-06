@@ -12,6 +12,7 @@ Welcome to the ROS 2 Project! This repository contains resources and code for cr
 - [Future Object](#future-object)
 - [Client Methods](#client-methods)
 - [Service Methods](#service-methods)
+- [Parameters](#Parameters)
 
 ## Workspace Creation
 
@@ -161,6 +162,49 @@ Represents a value that may not yet be available but will be resolved later.
 - `service.assert_liveliness()`: Notifies the system that the service is still alive.
 - `service.configure_intra_process_communication(enable=True)`: Same as client method.
 - `service.get_qos()`: Returns the Quality of Service (QoS) settings for the service.
+
+## Parameters:
+
+- `node.declare_parameter("parameter_name", "optional_default_value")`: Declares a new parameter for the node with a name and optionally a default value.
+
+- `node.set_parameter("param_name", Parameter.Type.INTEGER, <value>)`: Sets the value of a single parameter object.
+
+- `node.set_parameters([ Parameter('param1', Parameter.Type.INTEGER, 10), Parameter('param2', Parameter.Type.STRING, 'value') ])`: Sets multiple parameters' values; also accepts parameter objects.
+
+- `param = node.get_parameter("param_name")`: Returns the parameter object.
+
+- `params = node.get_parameters(['param1', 'param2'])`: Retrieves multiple parameters by name. It returns a list of Parameter objects.
+
+- `param.get_name()`: Returns the name of the parameter.
+
+- `param.get_type()`: Returns the type of the parameter.
+
+- `param.get_parameter_value().string_value`: Returns the parameter value in string type (type casting).
+
+- `param.value`: Returns the actual value (without type casting).
+
+- `param_msg = param.to_parameter_msg()`: Converts the parameter into a message of type Parameter that can be used in communication with other nodes.
+
+- `param = Parameter.from_parameter_msg(param_msg)`: Converts a Parameter message (from communication) back into a Parameter object.
+
+- `repr(param)`: Provides a string representation of the parameter object, useful for debugging.
+
+- `node.has_parameter('param_name')`: Checks if a parameter exists in the node.
+
+- `node.undeclare_parameter('param_name')`: Undeclares a parameter by removing it from the node. After undeclaring, the parameter will no longer be accessible.
+
+- `param = node.get_parameter_or('param_name', Parameter('param_name', Parameter.Type.STRING, 'default_value'))`: Returns the parameter if it exists; otherwise, returns a provided default value.
+
+## Parameter Types:
+
+- `Parameter.Type.BOOL`: Boolean type (True/False).
+- `Parameter.Type.INTEGER`: Integer type.
+- `Parameter.Type.DOUBLE`: Double/float type.
+- `Parameter.Type.STRING`: String type.
+- `Parameter.Type.BYTE_ARRAY`: List of bytes.
+- `Parameter.Type.INTEGER_ARRAY`: List of integers.
+- `Parameter.Type.DOUBLE_ARRAY`: List of doubles.
+- `Parameter.Type.STRING_ARRAY`: List of strings.
 
 ## Contributing
 

@@ -1,0 +1,4 @@
+Client_node:
+  ros__parameters:
+    value_a: 10
+    value_b : 10
